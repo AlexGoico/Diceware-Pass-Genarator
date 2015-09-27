@@ -26,11 +26,6 @@ void read_dict(std::unordered_map<int, std::string>& map, std::string filename)
     }
 }
 
-int p_matrix_idx(matrix<int>& mat, int i, int j)
-{
-    return mat(i, j);
-}
-
 void roll_dice_sets(matrix<int>& mat)
 {
     std::random_device rd;  // non-deterministic entropy.
