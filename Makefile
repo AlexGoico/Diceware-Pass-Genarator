@@ -5,3 +5,9 @@ diceware : diceware.o
 
 diceware.o : diceware.cpp
 	g++ ${CFLAGS} -c diceware.cpp
+
+clean :
+	rm *.o
+
+cleanall : clean
+	rm diceware
