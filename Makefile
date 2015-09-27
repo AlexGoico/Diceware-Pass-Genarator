@@ -1,4 +1,4 @@
-CFLAGS=-std=c++11
+CFLAGS=-std=c++11 -g
 
 diceware : diceware.o
 	g++ diceware.o -o diceware

@@ -19,7 +19,7 @@ void read_dict(std::unordered_map<int, std::string>& map, std::string filename)
   while (!fs.eof()) {
     fs >> key;
     std::getline(fs, word);
-    word.erase(0, word.find_first_not_of(' '));
+    word.erase(0, word.find_first_not_of("\t "));
     map[key] = word;
   }
 }
@@ -47,14 +47,14 @@ std::vector<int> bit_matrix_to_nums(matrix<int>& mat)
 int main(int argc, char* argv[])
 try
 {
-  if (argc != 3)
+  if (argc != 2)
     throw std::invalid_argument{"Usage: "
-        "./diceware diceware_dict.txt <no_of_words>"};
+        "./diceware <no_of_words>"};
   
   std::unordered_map<int, std::string> dice_map;
-  read_dict(dice_map, argv[1]);
+  read_dict(dice_map, "diceware_dict.txt");
     
-  const     int no_of_words = std::stoi(argv[2]);
+  const     int no_of_words = std::stoi(argv[1]);
   constexpr int digits_per_word = 5;  // compile time #define, way better than #define
   matrix<int> m{no_of_words, digits_per_word};
   roll_dice_sets(m);
