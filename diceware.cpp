@@ -32,38 +32,53 @@ void read_dict(const std::string& filename,
   }
 }
 
-// Fills the rows with digits
-std::vector<int> get_word_codes(int no_of_words, int digits_per_word)
+// Functor used to cache random number generator rather than
+// instantiating it over again in a function call
+class GetWordCode
 {
-  std::vector<int> temp(no_of_words, 0);
-
+  int digits_per_word;
   std::random_device rd;
-  std::mt19937 mt{rd()};
-  std::uniform_int_distribution<int> dist(1, 5);
-  for (int i = 0; i < no_of_words; ++i) {
-    for (int j = digits_per_word-1; j >= 0; --j)
-      temp[i] += dist(mt) * pow(10, j);
-  }
+  std::mt19937 mt{};
+  std::uniform_int_distribution<int> dist;
+public:
+  explicit GetWordCode(int dpw)
+    : digits_per_word{dpw}, rd{}, mt{rd()}, dist{1, 5} { };
 
-  return std::move(temp);
-}
+  int operator()()
+  {
+    int word_code = 0;
+    for (int i = digits_per_word-1; i >= 0; --i)
+      word_code += dist(mt) * pow(10, i);
+
+    return word_code;
+  }
+};
 
 int main(int argc, char* argv[])
 try
 {
   std::unordered_map<int, std::string> dice_map;
   read_dict("diceware_dict.txt", dice_map);
-    
-  // Creates a matrix of
-  // words in pass x digits_per_word
+  
   const     int no_of_words = argc > 2 ? std::stoi(argv[1]) : 5;
   constexpr int digits_per_word = 5;
-  const std::vector<int> word_codes = get_word_codes(no_of_words, digits_per_word);
 
-  std::cout << "Here is your diceware word list\n";
-  std::cout << "-------------------------------\n";
+  GetWordCode get_word_code{digits_per_word};
+  std::vector<int> word_codes(no_of_words, 0);
+  for (int& word_code : word_codes)
+    word_code = get_word_code();
+
+  std::cout << " ---------------------------------\n";
+  std::cout << "| Here is your diceware word list |\n";
+  std::cout << " ---------------------------------\n";
+  std::cout << "With    spaces: ";
   for (int code : word_codes)
     std::cout << dice_map[code] << " ";
+  std::cout << "\n";
+
+  std::cout << "Without spaces: ";
+  for (int code : word_codes)
+    std::cout << dice_map[code];
   std::cout << "\n";
 }
 catch (const FileNotFound& e) {
