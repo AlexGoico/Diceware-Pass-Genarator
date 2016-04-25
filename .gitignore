@@ -70,4 +70,5 @@ tramp
 # Visual Studio Code - https://code.visualstudio.com/
 .settings/
 
-diceware
+### CUSTOM ###
+build/

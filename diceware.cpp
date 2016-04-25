@@ -51,17 +51,12 @@ std::vector<int> get_word_codes(int no_of_words, int digits_per_word)
 int main(int argc, char* argv[])
 try
 {
-  if (argc != 2) {
-    std::cout << "Usage: ./diceware <no_of_words>\n";
-    return -3;
-  }
-  
   std::unordered_map<int, std::string> dice_map;
   read_dict("diceware_dict.txt", dice_map);
     
   // Creates a matrix of
   // words in pass x digits_per_word
-  const     int no_of_words = std::stoi(argv[1]);
+  const     int no_of_words = argc > 2 ? std::stoi(argv[1]) : 5;
   constexpr int digits_per_word = 5;
   const std::vector<int> word_codes = get_word_codes(no_of_words, digits_per_word);
 
@@ -72,11 +67,11 @@ try
   std::cout << "\n";
 }
 catch (const FileNotFound& e) {
-  std::cout << e.what();
+  std::cout << e.what() << std::endl;
   return -4;
 }
 catch (...)
 {
-  std::cout << "Something strange happened...";
+  std::cout << "Something strange happened..." << std::endl;
   return -77;
 }
