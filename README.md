@@ -20,5 +20,5 @@ make
 ```
 
 If you decide to build in another directory you must copy or link the
-diceware_dict.txt file to that directory. Lining is done on windows by
+diceware_dict.txt file to that directory. Linking is done on windows by
 creating a shortcut while on linux its `ln -s` on the terminal.
