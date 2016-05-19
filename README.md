@@ -7,6 +7,8 @@ Building
 --------
 To build simply
 ```
+mkdir build
+cd build
 cmake .
 make
 ./src/dwgen
